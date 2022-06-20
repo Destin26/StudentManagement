@@ -84,9 +84,9 @@ router.post("/login", (req, res) => {
         auth: true,
         username: user.username,
         isAdmin: user.isAdmin,
-      })
-      .setHeader("Access-Control-Allow-Origin", "http://localhost:5000")
-      .setHeader("Access-Control-Allow-Credentials", false);
+      });
+    // .setHeader("Access-Control-Allow-Origin", "http://localhost:5000")
+    // .setHeader("Access-Control-Allow-Credentials", false);
   } else {
     res.status(400).json({
       auth: false,

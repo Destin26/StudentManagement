@@ -21,6 +21,8 @@ export default function TeachersTable(props) {
   }, []);
 
   return (
-    <div className="w-full">{teacherData && <Table data={teacherData} />}</div>
+    <div className="w-full">
+      {teacherData && <Table data={teacherData} table="Teacher" />}
+    </div>
   );
 }

@@ -12,6 +12,10 @@ export default function Table(props) {
       );
     });
   };
+
+  const getId = (id) => {
+    console.log(id);
+  };
   // get table row data
   const tdData = () => {
     return props.data.map((data) => {
@@ -24,6 +28,7 @@ export default function Table(props) {
               </td>
             );
           })}
+          <td onClick={() => getId(data.id)}>Edit</td>
         </tr>
       );
     });

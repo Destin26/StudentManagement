@@ -15,11 +15,17 @@ router.use(express.json());
 router.use(cookieparser());
 
 router.get("", (req, res) => {
-  console.log("request made to student table");
-  pool.query("SELECT * FROM students", (err, result) => {
-    if (err) console.log(err);
-    res.json({ students: result.rows });
-  });
+  console.log("request made to student table", req.query.classid);
+  pool.query(
+    "SELECT id,firstname,lastname,classid,guardianname,phone FROM students WHERE classid = $1",
+    [req.query.classid],
+    (err, result) => {
+      if (err) console.log(err);
+      res.json({
+        students: result.rows.map((row) => row),
+      });
+    }
+  );
 });
 
 module.exports = router;

@@ -36,7 +36,7 @@ export default function Login(props) {
     }
   };
   return (
-    <div className="container">
+    <div className="container w-full">
       {user ? (
         <div className="home">
           <span>
@@ -45,7 +45,7 @@ export default function Login(props) {
           </span>
         </div>
       ) : (
-        <div className="login">
+        <div className="login w-full">
           <form
             onSubmit={handleSubmit}
             className="flex flex-col items-center gap-1"

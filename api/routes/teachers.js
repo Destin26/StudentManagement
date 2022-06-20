@@ -16,8 +16,11 @@ router.use(cookieparser());
 
 router.get("", (req, res) => {
   console.log("request made to teahcers table");
-  pool.query("SELECT * FROM teachers", (err, result) => {
-    if (err) console.log(err);
+  pool.query("SELECT id,username,email FROM teachers", (err, result) => {
+    if (err) {
+      console.log(err);
+      res.json({ teachers: "" });
+    }
     res.json({ teachers: result.rows });
   });
 });

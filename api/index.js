@@ -6,9 +6,11 @@ app.use(cors());
 const userRoute = require("./routes/user");
 const studentRoute = require("./routes/students");
 const teachersRoute = require("./routes/teachers");
+const marksRoute = require("./routes/marks");
 app.use("/api/users", userRoute);
 app.use("/api/students", studentRoute);
 app.use("/api/teachers", teachersRoute);
+app.use("/api/marks", marksRoute);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -21,6 +21,14 @@ export default function Verticalnav(props) {
           >
             Teachers
           </li>
+          <li
+            className="text-[20px] cursor-pointer"
+            onClick={() => {
+              props.sendTable("Marks");
+            }}
+          >
+            Marks
+          </li>
         </ul>
       </div>
     </nav>

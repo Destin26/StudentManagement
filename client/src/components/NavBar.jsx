@@ -6,8 +6,8 @@ export default function NavBar(props) {
     isAdmin = props.user.isAdmin;
   }
   return (
-    <nav>
-      <div className="h-[65px] bg-slate-400 flex p-2 items-center">
+    <nav className="w-full">
+      <div className="h-[65px] bg-slate-400 flex-grow flex p-2 items-center">
         <div>
           <p className="font-semibold">
             {isAdmin ? "Admin" : "Teacher"} Dashboard
