@@ -4,7 +4,7 @@ import Table from "./Table";
 
 export default function TeachersTable(props) {
   const [teacherData, setTeacherData] = useState(null);
-  console.log(teacherData);
+  // console.log(teacherData);
 
   useEffect(() => {
     axios

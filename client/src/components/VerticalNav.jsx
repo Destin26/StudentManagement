@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Verticalnav(props) {
   return (
@@ -11,7 +12,7 @@ export default function Verticalnav(props) {
               props.sendTable("Students");
             }}
           >
-            Students
+            <Link to={"/"}>Students</Link>
           </li>
           <li
             className="text-[20px] cursor-pointer"
@@ -19,7 +20,7 @@ export default function Verticalnav(props) {
               props.sendTable("Teachers");
             }}
           >
-            Teachers
+            <Link to={"/"}>Teachers</Link>
           </li>
           <li
             className="text-[20px] cursor-pointer"
@@ -27,7 +28,7 @@ export default function Verticalnav(props) {
               props.sendTable("Marks");
             }}
           >
-            Marks
+            <Link to={"/"}>Marks</Link>
           </li>
         </ul>
       </div>

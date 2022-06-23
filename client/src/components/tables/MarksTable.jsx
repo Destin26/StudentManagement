@@ -11,14 +11,14 @@ export default function MarksTable(props) {
 
   const getClassId = (value) => {
     setFilter(value);
-    console.log(value);
+    // console.log(value);
   };
 
   const getFilters = (arr) => {
     if (arr !== null) {
-      console.log("sdasdasd", arr);
+      // console.log("sdasdasd", arr);
       setFilter(arr);
-      console.log("Filter Reciede successfully", filter);
+      // console.log("Filter Reciede successfully", filter);
     }
   };
 
@@ -55,7 +55,7 @@ export default function MarksTable(props) {
   return (
     <div className="w-full">
       <MarksFilter sendFilters={getFilters} />
-      {marksData && <Table data={marksData} table="Student" />}
+      {marksData && <Table data={marksData} table="Mark" />}
     </div>
   );
 }

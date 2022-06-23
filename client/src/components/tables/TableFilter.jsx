@@ -5,7 +5,7 @@ export default function TableFilter(props) {
   const [classId, setClassId] = useState(1);
 
   const handleSelectChange = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setClassId(e.target.value);
   };
 

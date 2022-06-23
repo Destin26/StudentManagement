@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+
 const Pool = require("pg").Pool;
 const cookieparser = require("cookie-parser");
 const pool = new Pool({
@@ -48,6 +49,24 @@ const verify = (req, res, next) => {
     res.status(401).json("You are not authenticated");
   }
 };
+const verifyRefreshToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+    console.log(token);
+    jwt.verify(token, "myRefreshSecretKey", (err, user) => {
+      if (err) {
+        console.log(err);
+        return res.status(403).json("TOken is not valid");
+      }
+      req.user = user;
+      console.log("Verfied", user);
+      next();
+    });
+  } else {
+    res.status(401).json("You are not authenticated");
+  }
+};
 
 router.post("/register", (req, res) => {
   const { username, password } = req.body;
@@ -76,17 +95,27 @@ router.post("/login", (req, res) => {
     refreshTokens.push(refreshToken);
     //response to the client
     res
-      .cookie("accessToken", accessToken, {
-        maxAge: 100000,
-        secure: true,
+      .setHeader("Access-Control-Allow-Origin", "http://localhost:5000")
+      .setHeader("Access-Control-Allow-Credentials", true)
+      .cookie("accesstoken", accessToken, {
+        sameSite: "strict",
+        path: "/",
+        expires: new Date(new Date().getTime() + 60 * 1000),
+        httpOnly: false,
+      })
+      .cookie("refreshToken", refreshToken, {
+        sameSite: "strict",
+        path: "/",
+        expires: new Date(new Date().getTime() + 60 * 1000),
+        httpOnly: false,
       })
       .json({
         auth: true,
         username: user.username,
         isAdmin: user.isAdmin,
+        // AccessToken: accessToken,
+        // RefreshToken: refreshToken,
       });
-    // .setHeader("Access-Control-Allow-Origin", "http://localhost:5000")
-    // .setHeader("Access-Control-Allow-Credentials", false);
   } else {
     res.status(400).json({
       auth: false,
@@ -96,11 +125,15 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/refresh", (req, res) => {
-  const refreshToken = req.body.token;
+  console.log("Refresh request", req.cookies.refreshToken);
+  const refreshToken = req.cookies.refreshToken;
 
-  if (!refreshToken) return res.status(401).json("You are not authenticated");
+  if (!refreshToken)
+    return res
+      .status(401)
+      .json({ message: "You are not authenticated", auth: false });
   if (!refreshTokens.includes(refreshToken)) {
-    return res.status(403).json("REfresh token is not valid");
+    return res.status(403).json({ message: "Token Not Valid", auth: false });
   }
   jwt.verify(refreshToken, "myRefreshSecretKey", (err, user) => {
     err && console.log(err);
@@ -109,17 +142,32 @@ router.post("/refresh", (req, res) => {
     const newRefreshToken = generateRefreshToken(user);
 
     refreshTokens.push(newRefreshToken);
-    res.status(200).json({
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
-    });
+    res
+      .status(200)
+      .setHeader("Access-Control-Allow-Origin", "http://localhost:5000")
+      .setHeader("Access-Control-Allow-Credentials", true)
+      .cookie("accesstoken", newAccessToken, {
+        sameSite: "strict",
+        path: "/",
+        expires: new Date(new Date().getTime() + 100 * 1000),
+        httpOnly: false,
+      })
+      .cookie("refreshToken", newRefreshToken, {
+        sameSite: "strict",
+        path: "/",
+        expires: new Date(new Date().getTime() + 100 * 1000),
+        httpOnly: false,
+      })
+      .json({
+        auth: true,
+      });
   });
 });
 
-router.post("/logout", verify, (req, res) => {
-  const refreshToken = req.body.token;
+router.post("/logout", verifyRefreshToken, (req, res) => {
+  const refreshToken = req.headers.authorization.split(" ")[1];
   refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
-  res.status(200).json("You logged out ");
+  res.status(200).json({ auth: false });
 });
 
 router.delete("/:userId", verify, (req, res) => {

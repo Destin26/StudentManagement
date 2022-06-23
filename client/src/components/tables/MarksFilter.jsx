@@ -25,9 +25,9 @@ export default function MarksFilter(props) {
   };
 
   useEffect(() => {
-    console.log("initialized: ", arr);
+    // console.log("initialized: ", arr);
     props.sendFilters(arr);
-  }, []);
+  }, [arr]);
 
   return (
     <div className="w-full bg-white h-[50px]">
@@ -64,7 +64,7 @@ export default function MarksFilter(props) {
         <li
           className="rounded cursor-pointer bg-white border-[1px] border-black p-2 shadow-md"
           onClick={() => {
-            console.log(arr);
+            // console.log(arr);
             props.sendFilters(arr);
           }}
         >

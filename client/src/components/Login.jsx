@@ -1,12 +1,16 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-
+import Cookies from "universal-cookie";
+import { useCookies } from "react-cookie";
+axios.defaults.withCredentials = true;
 export default function Login(props) {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
+  const [accessToken, setAccessToken] = useCookies(["accessToken"]);
+  const [refreshToken, setRefreshToken] = useCookies(["refreshToken"]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,17 +22,26 @@ export default function Login(props) {
           password: password,
         })
         .then((res) => {
-          console.log(res);
+          console.log("Login response", res);
           if (res.data.auth) {
             props.auth(true);
             props.showLogin(false);
             props.user(res.data);
             setSuccess(res.data.auth);
-            console.log(res.headers);
+            // setAccessToken("accessToken", res.data.AccessToken, {
+            //   secure: true,
+            //   sameSite: "none",
+            //   maxAge: 3000,
+            // });
+            // setRefreshToken("refreshToken", res.data.RefreshToken, {
+            //   secure: true,
+            //   sameSite: "none",
+            //   maxAge: 3000,
+            // });
           }
         })
         .catch((err) => {
-          console.error(err.response.data.message);
+          console.error(err.response.data);
         });
       return response;
     } catch (error) {
