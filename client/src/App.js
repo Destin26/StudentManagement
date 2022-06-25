@@ -14,6 +14,8 @@ import EditStudent from "./components/editing/EditStudent";
 import { useCookies } from "react-cookie";
 import { Cookies } from "react-cookie";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import AddStudent from "./components/editing/AddStudent";
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -37,6 +39,11 @@ function App() {
           console.log("Hellooooo", res.data.auth);
           setIsAuthenticated(res.data.auth);
           console.log(res.data.auth);
+        })
+        .then(() => {
+          const token = cookie.get("accesstoken");
+          const decodedUser = jwt_decode(token);
+          setUser(decodedUser);
         })
         .catch((err) => {});
     } catch (err) {
@@ -96,7 +103,17 @@ function App() {
               </div> */}
                 <Route
                   path=""
-                  element={<MainTable table={table} auth={isAuthenticated} />}
+                  element={
+                    <MainTable
+                      table={table}
+                      auth={isAuthenticated}
+                      verifyAuth={authenticator}
+                    />
+                  }
+                />
+                <Route
+                  path="/students/add"
+                  element={<AddStudent verifyAuth={authenticator} />}
                 />
                 <Route path="/student/:id" element={<EditStudent />} />
                 {/* <MainTable table={table} auth={isAuthenticated} /> */}

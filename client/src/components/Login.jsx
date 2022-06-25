@@ -1,10 +1,12 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import Cookies from "universal-cookie";
+import { Cookies } from "react-cookie";
 import { useCookies } from "react-cookie";
+import jwt_decode from "jwt-decode";
 axios.defaults.withCredentials = true;
 export default function Login(props) {
+  const cookie = new Cookies();
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +28,7 @@ export default function Login(props) {
           if (res.data.auth) {
             props.auth(true);
             props.showLogin(false);
-            props.user(res.data);
+            // props.user(res.data);
             setSuccess(res.data.auth);
             // setAccessToken("accessToken", res.data.AccessToken, {
             //   secure: true,
@@ -39,6 +41,12 @@ export default function Login(props) {
             //   maxAge: 3000,
             // });
           }
+        })
+        .then(() => {
+          const token = cookie.get("accesstoken");
+          const decodedUser = jwt_decode(token);
+          setUser(decodedUser);
+          props.user(decodedUser);
         })
         .catch((err) => {
           console.error(err.response.data);

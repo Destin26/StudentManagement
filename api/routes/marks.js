@@ -31,7 +31,7 @@ router.post("/subject", (req, res) => {
     [filter.subject, filter.exam, filter.class],
     (err, result) => {
       if (err) console.log(err);
-      console.log(result);
+      // console.log(result);
       res.json({
         marks: result.rows.map((row) => row),
       });

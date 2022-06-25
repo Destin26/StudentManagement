@@ -15,7 +15,7 @@ router.use(express.json());
 router.use(cookieparser());
 
 router.get("", (req, res) => {
-  console.log("request made to student table", req.query.classid);
+  console.log("request made to student table");
   pool.query(
     "SELECT id,firstname,lastname,classid,guardianname,phone FROM students WHERE classid = $1",
     [req.query.classid],
@@ -26,6 +26,10 @@ router.get("", (req, res) => {
       });
     }
   );
+});
+
+router.post("/add", (req, res) => {
+  console.log("Add response" + req);
 });
 
 module.exports = router;

@@ -19,18 +19,25 @@ let users;
 pool.query("SELECT * FROM teachers", (err, result) => {
   if (err) return console.log("Error" + err);
   users = [...result.rows];
-  console.log(users);
+  // console.log(users);
 });
 
 let refreshTokens = [];
 
 const generateAccessToken = (user) => {
-  return jwt.sign({ id: user.id, isAdmin: user.isAdmin }, "SecretKey", {
-    expiresIn: "10m",
-  });
+  return jwt.sign(
+    { username: user.username, id: user.id, isAdmin: user.isAdmin },
+    "SecretKey",
+    {
+      expiresIn: "10m",
+    }
+  );
 };
 const generateRefreshToken = (user) => {
-  return jwt.sign({ id: user.id, isAdmin: user.isAdmin }, "myRefreshSecretKey");
+  return jwt.sign(
+    { username: user.username, id: user.id, isAdmin: user.isAdmin },
+    "myRefreshSecretKey"
+  );
 };
 
 const verify = (req, res, next) => {

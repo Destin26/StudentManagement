@@ -32,7 +32,7 @@ export default function NavBar(props) {
 
   return (
     <nav className="w-full">
-      <div className="h-[65px] bg-slate-400 flex-grow flex p-2 items-center">
+      <div className="h-[65px] bg-slate-400 flex-grow flex p-2 items-center shadow-md">
         <div>
           <p className="font-semibold">
             {isAdmin ? "Admin" : "Teacher"} Dashboard
