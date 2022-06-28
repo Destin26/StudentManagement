@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import EditStudent from "../editing/EditStudent";
 
 export default function Table(props) {
   const column = Object.keys(props.data[0]);
@@ -33,6 +32,7 @@ export default function Table(props) {
           <td
             onClick={() => getId(data.id)}
             className="px-4  w-[20px] cursor-pointer font-semibold"
+            key={data}
           >
             <Link to={`/${props.table.toLowerCase()}/${data.id}`}>Edit</Link>
           </td>

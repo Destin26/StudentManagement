@@ -102,7 +102,7 @@ function App() {
                 <div className="w-full">{tab}</div>
               </div> */}
                 <Route
-                  path=""
+                  path="/"
                   element={
                     <MainTable
                       table={table}

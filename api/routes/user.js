@@ -29,7 +29,7 @@ const generateAccessToken = (user) => {
     { username: user.username, id: user.id, isAdmin: user.isAdmin },
     "SecretKey",
     {
-      expiresIn: "10m",
+      expiresIn: "30m",
     }
   );
 };
@@ -107,13 +107,13 @@ router.post("/login", (req, res) => {
       .cookie("accesstoken", accessToken, {
         sameSite: "strict",
         path: "/",
-        expires: new Date(new Date().getTime() + 60 * 1000),
+        expires: new Date(new Date().getTime() + 3600 * 1000),
         httpOnly: false,
       })
       .cookie("refreshToken", refreshToken, {
         sameSite: "strict",
         path: "/",
-        expires: new Date(new Date().getTime() + 60 * 1000),
+        expires: new Date(new Date().getTime() + 3600 * 1000),
         httpOnly: false,
       })
       .json({

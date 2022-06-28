@@ -3,55 +3,16 @@ import React from "react";
 import { useState } from "react";
 import { Cookies } from "react-cookie";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export default function AddStudent(props) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dob, setDob] = useState("");
-  const [email, setEmail] = useState("");
-  const [guardianName, setGuardianName] = useState("");
-  const [gender, setGender] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-
-  const hSubmit = (e) => {
-    const cookie = new Cookies();
-    e.preventDefault();
-    const newStudent = {
-      firstname: firstName,
-      lastname: lastName,
-      dob,
-      email,
-      guardianname: guardianName,
-      gender,
-      phonenumber: phoneNumber,
-    };
-    console.log(newStudent);
-
-    axios({
-      method: "post",
-      url: "http://localhost:3000/api/students/add",
-      data: {
-        studentObject: newStudent,
-      },
-      headers: {
-        authorization: "Bearerrr " + cookie.get("accesstoken"),
-      },
-    })
-      .then((res) => {
-        console.log("post respionse" + res);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-        props.verifyAuth(err.response.data.auth);
-      });
-  };
+  const navigate = useNavigate();
 
   const Input = ({ label, name, register, required }) => {
     return (
@@ -67,9 +28,33 @@ export default function AddStudent(props) {
     );
   };
 
-  const onSubmit = (data) => console.log(data);
-
-  const insertStudent = () => {};
+  const onSubmit = (data) => {
+    console.log(data);
+    const cookie = new Cookies();
+    axios({
+      method: "post",
+      url: "http://localhost:3000/api/students/add",
+      data: {
+        studentObject: data,
+      },
+      headers: {
+        authorization: "Bearerrr " + cookie.get("accesstoken"),
+      },
+    })
+      .then((res) => {
+        if (res.data.success === true) {
+          navigate("/", { replace: true });
+        }
+      })
+      .catch((err) => {
+        if (err.response.data) {
+          console.log(err.response.data);
+          props.verifyAuth(err.response.data.auth);
+        } else {
+          console.log("erorr");
+        }
+      });
+  };
 
   return (
     <div className="m-4 w-full flex justify-around">
@@ -77,6 +62,15 @@ export default function AddStudent(props) {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col w-[600px] border-2 p-4 h-[500px]"
       >
+        {(errors?.firstName?.type ||
+          errors?.lastName?.type ||
+          errors?.gender?.type ||
+          errors?.dob?.type ||
+          errors?.guardianName?.type ||
+          errors?.phoneNumber?.type ||
+          errors?.email?.type) === "required" && (
+          <p className="text-red-500">Enter All the fields</p>
+        )}
         <Input
           label="First Name: "
           name="firstName"
@@ -89,56 +83,40 @@ export default function AddStudent(props) {
           register={register}
           required
         />
-
         <label className="flex gap-[50px] mt-6 self-center">
           <input
             type="radio"
-            name="gender"
-            id="gender"
-            value={"Male"}
-            className="mr-[-20px] text-slate-600"
-            // checked={(e) => setGender(e.target.value)}
-            onChange={(e) => setGender(e.target.value)}
-            required
+            className="mr-[-20px]"
+            value="Male"
+            {...register("gender", { required: true })}
           />
           Male
           <input
             type="radio"
-            name="gender"
-            id="gender"
-            value={"Female"}
-            className="mr-[-20px] text-slate-600"
-            // checked={(e) => setGender(e.target.value)}
-            onChange={(e) => setGender(e.target.value)}
+            className="mr-[-20px] "
+            value="Female"
+            {...register("gender", { required: true })}
           />
           Female
         </label>
-        <label className="flex gap-[40px] mt-6 self-center items-center">
+        <label className="flex gap-[40px] mt-6 self-center w-full items-center ">
           DOB :
           <input
+            className="h-[30px] border-[1px] w-[250px] justify-center  uppercase cursor-pointer focus:required:invalid:border-red-500 focus:outline-none"
             type="date"
-            name="dob"
-            id="dob"
-            className="h-[30px] w-[250px] justify-center border-0 uppercase cursor-pointer focus:required:invalid:border-red-500 focus:outline-none"
-            onChange={(e) => setDob(e.target.value)}
-            required
+            {...register("dob", {
+              required: true,
+              min: "01-01-1990",
+              max: "01-01-2000",
+            })}
           />
         </label>
-
-        <label
-          htmlFor="guardianName"
-          className="flex justify-between items-center mt-6"
-        >
-          Guardian Name :
-          <input
-            type="text"
-            name="guardianName"
-            id="guardianName"
-            className="border-[1px] h-[35px] w-auto p-2 flex-grow ml-2 rounded border-black focus:required:invalid:border-red-500 focus:outline-none"
-            onChange={(e) => setGuardianName(e.target.value)}
-            required
-          />
-        </label>
+        <Input
+          label="Guardian Name: "
+          name="guardianName"
+          register={register}
+          required
+        />
         <label
           htmlFor="phoneNumber"
           className="flex justify-between items-center mt-6"
@@ -146,11 +124,8 @@ export default function AddStudent(props) {
           Phone Number :
           <input
             type="text"
-            name="phoneNumber"
-            id="phoneNumber"
             className="border-[1px] h-[35px] w-auto p-2 flex-grow ml-2 rounded border-black focus:required:invalid:border-red-500 focus:outline-none"
-            required
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            {...register("phoneNumber", { required: true, maxLength: 10 })}
           />
         </label>
         <label
@@ -159,13 +134,23 @@ export default function AddStudent(props) {
         >
           Email :
           <input
-            type="text"
-            name="email"
-            id="email"
+            {...register("email", {
+              required: true,
+              pattern: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
+            })}
             className="border-[1px] h-[35px] w-auto p-2 flex-grow ml-2 rounded border-black focus:required:invalid:border-red-500 focus:outline-none"
-            required
-            onChange={(e) => setEmail(e.target.value)}
           />
+          {errors?.email?.type === "pattern" && (
+            <p className="text-red-500">Enter Valid Email</p>
+          )}
+        </label>
+
+        <label htmlFor="class" className="flex gap-4 items-center mt-6">
+          Class:
+          <select defaultValue={1} {...register("class", { required: true })}>
+            <option value={1}>A</option>
+            <option value={2}>B</option>
+          </select>
         </label>
         <button
           type="submit"
