@@ -17,12 +17,12 @@ router.use(cookieparser());
 router.get("", (req, res) => {
   console.log("request made to student table");
   pool.query(
-    "SELECT firstname,lastname,guardianname,phone FROM students WHERE classid = $1",
+    "SELECT id,firstname,lastname,guardianname,phone FROM students WHERE classid = $1",
     [req.query.classid],
     (err, result) => {
       if (err) console.log(err);
       res.json({
-        students: result.rows.map((row) => row),
+        students: result.rows,
       });
     }
   );

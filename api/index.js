@@ -33,7 +33,7 @@ const verify = (req, res, next) => {
 };
 
 app.use("/api/users", userRoute);
-app.use("/api/students", verify, studentRoute);
+app.use("/api/students",verify, studentRoute);
 app.use("/api/teachers", verify, teachersRoute);
 app.use("/api/marks", verify, marksRoute);
 

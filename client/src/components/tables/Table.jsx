@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import DeletePop from "../editing/DeletePop";
 
 export default function Table(props) {
   const column = Object.keys(props.data[0]);
@@ -35,6 +36,9 @@ export default function Table(props) {
             key={data}
           >
             <Link to={`/${props.table.toLowerCase()}/${data.id}`}>Edit</Link>
+          </td>
+          <td>
+            <DeletePop id={data.id} />
           </td>
         </tr>
       );
