@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Pool = require("pg").Pool;
 const cookieparser = require("cookie-parser");
+const Student = require("./models/students.model");
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
@@ -28,8 +29,30 @@ router.get("", (req, res) => {
   );
 });
 
+router.post('/addv2', (req, res) => {
+  console.log(req.body.studentObject)
+  if (req.body !== null) {
+    const newStudent = req.body.studentObject;
+    Student.query().insert({
+      firstname: newStudent.firstName,
+      lastname: newStudent.lastName,
+      phone: newStudent.phoneNumber,
+      email: newStudent.email,
+      classid: newStudent.class,
+      guardianname: newStudent.guardianName,
+      dob: newStudent.dob,
+      gender: newStudent.gender,
+      guardianphone: newStudent.guardianPhone
+    }).then(success => {
+      res.json({
+        success: true
+      })
+    })
+  }
+})
+
+
 router.post("/add", (req, res) => {
-  console.log(req.body);
 
   if (req.body !== null) {
     const newStudent = req.body.studentObject;
@@ -59,5 +82,11 @@ router.post("/add", (req, res) => {
     );
   }
 });
+
+router.post('/test', (req, res) => {
+  Student.query().then(data => {
+    res.json(data)
+  })
+})
 
 module.exports = router;
