@@ -33,7 +33,7 @@ export default function AddStudent(props) {
     const cookie = new Cookies();
     axios({
       method: "post",
-      url: "http://localhost:3000/api/students/add",
+      url: "http://localhost:3000/api/students/addv2",
       data: {
         studentObject: data,
       },
@@ -103,9 +103,9 @@ export default function AddStudent(props) {
           DOB :
           <input
             className="h-[30px] border-[1px] w-[250px] justify-center  uppercase cursor-pointer focus:required:invalid:border-red-500 focus:outline-none"
-            type="date"
+            type="text"
             {...register("dob", {
-              required: true,
+              required: false,
               min: "01-01-1990",
               max: "01-01-2000",
             })}

@@ -6,7 +6,7 @@ app.use(cors({ origin: "http://localhost:5000", credentials: true }));
 const jwt = require("jsonwebtoken");
 
 const userRoute = require("./routes/user");
-const studentRoute = require("./routes/students");
+const studentRoute = require("./routes/students/students");
 const teachersRoute = require("./routes/teachers");
 const marksRoute = require("./routes/marks");
 
@@ -33,7 +33,7 @@ const verify = (req, res, next) => {
 };
 
 app.use("/api/users", userRoute);
-app.use("/api/students",verify, studentRoute);
+app.use("/api/students", studentRoute);
 app.use("/api/teachers", verify, teachersRoute);
 app.use("/api/marks", verify, marksRoute);
 
