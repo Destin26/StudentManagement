@@ -18,7 +18,7 @@ export default function StudentTable(props) {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:3000/api/students",
+      url: "http://localhost:3000/api/students/v2",
       params: {
         classid: classId,
       },

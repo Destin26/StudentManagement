@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const userRoute = require("./routes/user");
 const studentRoute = require("./routes/students/students");
 const teachersRoute = require("./routes/teachers");
-const marksRoute = require("./routes/marks");
+const marksRoute = require("./routes/marks/marks");
 
 const verify = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -35,7 +35,7 @@ const verify = (req, res, next) => {
 app.use("/api/users", userRoute);
 app.use("/api/students", studentRoute);
 app.use("/api/teachers", verify, teachersRoute);
-app.use("/api/marks", verify, marksRoute);
+app.use("/api/marks", marksRoute);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
