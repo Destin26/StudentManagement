@@ -2,7 +2,6 @@ const {
     Model,
     QueryBuilder
 } = require('objection');
-const { modelPaths } = require('./routes/students/models/classes.model');
 
 const knex = require('knex')(require('./knexfile'));
 

@@ -28,7 +28,7 @@ export default function MarksTable(props) {
     if (filter) {
       axios({
         method: "post",
-        url: "http://localhost:3000/api/marks/subject",
+        url: "http://localhost:3000/api/marks/subjectv2",
         data: filter,
         headers: {
           authorization: "Bearer " + cookie.get("accesstoken"),

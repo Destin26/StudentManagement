@@ -1,6 +1,6 @@
-const { Model } = require('objection')
 const BaseModel = require('../../../db')
 const moment = require('moment');
+
 
 class Student extends BaseModel {
     static get tableName() {
@@ -8,19 +8,23 @@ class Student extends BaseModel {
     }
 
     static get relationMappings() {
-        const classes = require('./classes.model');
+        const Marks = require('../../marks/models/marks.model');
 
         return {
-            cls: {
-                relation: Model.BelongsToOneRelation,
-                modelClass: classes,
+            mark: {
+                relation: BaseModel.HasManyRelation,
+                modelClass: Marks,
                 join: {
-                    from: 'students.classid',
-                    to: 'classes.id'
+                    from: 'students.id',
+                    to: 'marks.studentid'
                 }
             }
         }
 
+    }
+
+    fullName() {
+        return this.firstname + ' ' + this.lastname
     }
 
     $beforeInsert() {
