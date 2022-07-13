@@ -16,6 +16,7 @@ import { Cookies } from "react-cookie";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import AddStudent from "./components/editing/AddStudent";
+import DeleteModal from "./components/editing/DeleteModal";
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -24,6 +25,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [table, setTable] = useState("Students");
   const [cookis, setCookies] = useCookies(["accessToken", "refreshToken"]);
+
+  const [modal, setModal] = useState(false);
+
+  const getModalToggle = (value) => {
+    setModal(value);
+  }
 
   const cookie = new Cookies();
   const checkLoginCookie = () => {
@@ -108,6 +115,7 @@ function App() {
                       table={table}
                       auth={isAuthenticated}
                       verifyAuth={authenticator}
+                      toggleModal={getModalToggle}
                     />
                   }
                 />
@@ -121,6 +129,7 @@ function App() {
             </>
           )}
         </div>
+        <DeleteModal />
       </div>
     </Router>
   );

@@ -12,7 +12,7 @@ export default function TeachersTable(props) {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:3000/api/teachers",
+      url: "http://localhost:3000/api/teachers/v2",
       headers: {
         authorization: "Bearer " + cookie.get("accesstoken"),
       },

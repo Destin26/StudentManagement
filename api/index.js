@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 const userRoute = require("./routes/user");
 const studentRoute = require("./routes/students/students");
-const teachersRoute = require("./routes/teachers");
+const teachersRoute = require("./routes/teachers/teachers");
 const marksRoute = require("./routes/marks/marks");
 
 const verify = (req, res, next) => {
