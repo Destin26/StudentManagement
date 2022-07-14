@@ -1,16 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Pool = require("pg").Pool;
 const cookieparser = require("cookie-parser");
 const Marks = require("./models/marks.model");
-
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "StudentSchool1",
-  password: "0000",
-  port: 5432,
-});
 
 router.use(express.json());
 router.use(cookieparser());
