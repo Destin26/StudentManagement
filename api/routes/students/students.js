@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cookieparser = require("cookie-parser");
 const Student = require("./models/students.model");
+const { add } = require("./validators");
 
 
 router.use(express.json());
@@ -21,8 +22,9 @@ router.get('/v2', async (req, res) => {
 
 })
 
-router.post('/addv2', (req, res) => {
+router.post('/addv2', add, (req, res) => {
   console.log(req.body.studentObject)
+
   if (req.body !== null) {
     const newStudent = req.body.studentObject;
     Student.query().insert({
