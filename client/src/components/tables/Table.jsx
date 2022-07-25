@@ -38,7 +38,7 @@ export default function Table(props) {
             <Link to={`/${props.table.toLowerCase()}/${data.id}`}>Edit</Link>
           </td>
           <td>
-            <DeletePop id={data.id} />
+            <DeletePop id={data.id}  />
           </td>
         </tr>
       );
